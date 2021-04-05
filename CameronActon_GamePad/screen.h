@@ -30,9 +30,6 @@ void screenTest(){
     flip = !flip;
   }
 
-  if(flip){
-    tft.fillScreen(ILI9341_BLACK);
-  } else {
-    tft.fillScreen(ILI9341_WHITE);
-  }
+  if(flip){ tft.fillScreen(ILI9341_BLACK); }
+  else { tft.fillScreen(ILI9341_WHITE); }
 }
