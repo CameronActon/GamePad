@@ -22,6 +22,7 @@ void initScreen() {
   tft.useFrameBuffer(1);               // Use Frame Buffer
 
   tft.fillScreen(ILI9341_BLACK);       // Clear Screen
+  tft.updateScreen();
 
 }
 
