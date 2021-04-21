@@ -62,10 +62,14 @@ void level2() {             //"First Room"
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    enemyX = 30;
+    enemyY = 30;
     initLvl2 = true;
   }
 
   drawLevel(curMode);
+  drawEnemy();
   drawHero();
 
   if(interaction[curMode][curTile] == 0x06 && buttonBuffer[3] == 1){curMode = 3; initLvl2 = false; heroX = 30; heroY = 75;} //Advance to Level Three

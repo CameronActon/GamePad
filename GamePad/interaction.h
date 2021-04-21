@@ -189,42 +189,30 @@ int curTileY;
 
 int curTile; 
 
-boolean checkMove(int level, int xHero, int yHero, int wHero, int hHero){
-  curTileX = xHero/tileSize;
-  curTileY = yHero/tileSize;
+boolean checkMove(int level, int curX, int curY, int curW, int curH){
+
+  curTileX = curX/tileSize;
+  curTileY = curY/tileSize;
 
   curTile = curTileX + (curTileY * tileW); 
-  
-  boolean canMove=true;
 
-//   Serial.print(curTile);
-//   Serial.print("\t");
-//   Serial.print(interaction[level][curTile]);
-//   Serial.println();
+  bool canMove = true;
 
-  for(int i = 0; i<8; i++){
-    int whichTile = neighbors[curTile][i];              // Get Current Neighbor
+  for(int i = 0; i < 8; i++){
+    int whichTile = neighbors[curTile][i];              // Get Current Neighbor    
     int neighborX = (whichTile % tileW) * tileSize;     // Get X Value of Neighbor
     int neighborY = (whichTile / tileW) * tileSize;     // Get Y Value of Neighbor
 
-    boolean isOut = false; if(interaction[level][whichTile]==0xFF){isOut=true;}
-    boolean xMin = false; if(xHero < neighborX + tileSize){xMin = true;}
-    boolean xMax = false; if(xHero + wHero > neighborX){xMax = true;}
-    boolean yMin = false; if(yHero < neighborY + tileSize){yMin = true;}
-    boolean yMax = false; if(yHero + hHero > neighborY){ yMax= true;}
+    boolean isOut = false; if(interaction[level][whichTile] == 0xFF){isOut = true;}
+    boolean xMin = false; if(curX < neighborX + tileSize){xMin = true;}
+    boolean xMax = false; if(curX + curW > neighborX){xMax = true;}
+    boolean yMin = false; if(curY < neighborY + tileSize){yMin = true;}
+    boolean yMax = false; if(curY + curH > neighborY){yMax = true;}
 
-    if(isOut && xMin && xMax && yMin && yMax){ canMove=false; }
-
-//    Serial.print("LVL:"); Serial.print(level); 
-//    Serial.print("\t X:"); Serial.print(xHero); Serial.print("\t Y:"); Serial.print(yHero); 
-//    Serial.print("\t W:");  Serial.print(wHero); Serial.print("\t H:"); Serial.print(hHero); 
-//    Serial.print("\t CT:"); Serial.print(curTile); Serial.print("\t NT:"); Serial.print(whichTile); 
-//    Serial.print("\t NX:"); Serial.print(neighborX); Serial.print("\t NY:"); Serial.print(neighborY); 
-//    Serial.print("\t OUT:"); Serial.print(isOut);
-//    Serial.print("\t xMin:"); Serial.print(xMin); Serial.print("\t xMax:"); Serial.print(xMax); 
-//    Serial.print("\t yMin:"); Serial.print(yMin); Serial.print("\t yMax:"); Serial.print(yMax); 
-//    Serial.print("\t ?:"); Serial.print(canMove);
-//    Serial.println();
+    if(isOut == true && xMin == true && xMax == true && yMin == true && yMax == true){
+      canMove = false;
+    }
+  
   }
   return canMove;
 }
