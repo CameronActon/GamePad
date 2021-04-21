@@ -1,20 +1,23 @@
 #include "mojiSprites_MASK.h"
 #include "mojiSprites_PIX.h"
 
-#define heroW 24
+#define heroW 16
 #define heroH 24
-
-#define UIHeight 60
 
 float heroX = 150;
 float heroY = 120;
 
-float heroSpeed = 1;
+float heroSpeed = .5;
 int heroDir;
 int heroFrame = 0;
 Metro heroFrameTimer = Metro(100);
 
 Metro positionPrintTimer = Metro(50);
+
+bool heroHasBow;
+bool heroHasSpeed;
+
+int heroHealth = 3;
 
 void moveHero() {
   float nextX = heroX + (heroSpeed * float(joystickBuffer[0]));
@@ -24,13 +27,6 @@ void moveHero() {
     heroX = nextX;
     heroY = nextY;
   }
-  
-//  if (nextY < (screenH - UIHeight - heroH) && nextY > 0) {
-//    if (nextX < (screenW - heroW) && nextX > 0) {
-//      heroX = nextX;
-//      heroY = nextY;
-//    }
-//  }
 
   if(joystickBuffer[0] == -1){ heroDir = -1; }
   else if(joystickBuffer[0] == 1 || joystickBuffer[1] != 0){ heroDir = 1; }
@@ -38,12 +34,12 @@ void moveHero() {
 
 void animateHero(){
   if(heroFrameTimer.check()){
-    if(buttonBuffer[0] == 0 && buttonBuffer[1] == 0){
+    if(buttonBuffer[1] == 0 && buttonBuffer[2] == 0){
       if(joystickBuffer[0] != 0 && heroDir == -1){ heroFrame = 0 + ((heroFrame + 1) % 3); }
-      else if(joystickBuffer[0] != 0 && heroDir == 1){ heroFrame = 5 + ((heroFrame + 1) % 3); }  //Issue here with not looping animation through when '5' is first frame
+      else if(joystickBuffer[0] != 0 && heroDir == 1){ heroFrame = 6 + ((heroFrame + 1) % 3); }  
     } else {
-      if(buttonBuffer[0] == 1){ heroFrame = 3 + ((heroFrame + 1) % 2); } //Issue here with not looping animation through when '3' is first frame
-      else if(buttonBuffer[1] == 1){ heroFrame = 8 + ((heroFrame + 1) % 2); }
+      if(buttonBuffer[1] == 1){ heroFrame = 3 + ((heroFrame + 1) % 3); }
+      else if(buttonBuffer[2] == 1){ heroFrame = 9 + ((heroFrame + 1) % 3); }
     }
   }
 }

@@ -10,6 +10,8 @@ int curMode = -1;
 #include "tile.h"
 #include "interaction.h"
 #include "hero.h"
+#include "enemy.h"
+#include "status.h"
 #include "modes.h"
 
 void setup() {
@@ -23,6 +25,6 @@ void setup() {
 void loop() {
   getControls();
   runMode();
-  checkFrame();
+  //checkFrame();
   tft.updateScreen();
 }
