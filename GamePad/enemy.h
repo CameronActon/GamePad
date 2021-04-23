@@ -10,15 +10,15 @@ Metro enemyBrainTimer = Metro(1000);
 float enemyX = 0;
 float enemyY = 0;
 
-int enemyStatus = 1;
+bool enemyStatus = true;
+int enemyHealth = 3;
 
 int enemyType = 0; 
 
 float enemyXDir = 0;
 float enemyYDir = 0;
 
-int enemyFrame = 0;
-int enemyHealth = 1; 
+int enemyFrame = 0; 
 
 int enemySmart = 3;
 float enemySpeed = 0.15;
@@ -58,12 +58,14 @@ void animateEnemy(){
 }
 
 void drawEnemy(){
-  updateEnemyDir();
-  moveEnemy();
-  animateEnemy();  
-
-  tft.setClipRect(enemyX - 2, enemyY - 2, enemyW + 4, enemyH + 4);
-  drawLevel(curMode);
-  tft.drawRGBBitmap(enemyX, enemyY, enemy_PIX[enemyFrame], enemy_MASK[enemyFrame], enemyW, enemyH);
-  tft.updateScreen();
+  if(enemyStatus){
+    updateEnemyDir();
+    moveEnemy();
+    animateEnemy();
+      
+    tft.setClipRect(enemyX - 2, enemyY - 2, enemyW + 4, enemyH + 4);
+    drawLevel(curMode);
+    tft.drawRGBBitmap(enemyX, enemyY, enemy_PIX[enemyFrame], enemy_MASK[enemyFrame], enemyW, enemyH);
+    tft.updateScreen();
+  }
 }

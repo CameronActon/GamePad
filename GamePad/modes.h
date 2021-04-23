@@ -30,8 +30,10 @@ void level0() {             //Amulet Room
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+    
     displayHearts(0);
     displayPowers(1,1);
+    
     initLvl0 = true;
   }
 
@@ -47,6 +49,10 @@ void level1() {             //Cave Hole Room
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+    
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl1 = true;
   }
 
@@ -63,14 +69,19 @@ void level2() {             //"First Room"
     drawLevel(curMode);
     tft.updateScreen();
 
+    displayHearts(0);
+    displayPowers(1,1);
+
     enemyX = 30;
     enemyY = 30;
+    enemyStatus = true;
     initLvl2 = true;
   }
 
   drawLevel(curMode);
   drawEnemy();
   drawHero();
+  fight();
 
   if(interaction[curMode][curTile] == 0x06 && buttonBuffer[3] == 1){curMode = 3; initLvl2 = false; heroX = 30; heroY = 75;} //Advance to Level Three
 }
@@ -80,6 +91,10 @@ void level3() {             //Level Three
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl3 = true;
   }
 
@@ -96,6 +111,10 @@ void level4() {             //Level Four
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl4 = true;
   }
 
@@ -111,6 +130,10 @@ void level5() {             //Clovis Merchant Room
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl5 = true;
   }
 
@@ -129,6 +152,10 @@ void level6() {             //Level Six
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl6 = true;
   }
 
@@ -144,6 +171,10 @@ void level7() {             //Level Seven
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl7 = true;
   }
 
@@ -159,6 +190,10 @@ void level8() {             //Ogre Boss Room
     tft.setClipRect(0, 0, screenW, screenH);
     drawLevel(curMode);
     tft.updateScreen();
+
+    displayHearts(0);
+    displayPowers(1,1);
+    
     initLvl8 = true;
   }
 
