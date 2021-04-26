@@ -2,7 +2,7 @@
 //Cameron Acton
 //CRT 360 Advanced Prototyping || GamePad
 
-int curMode = -1;
+int curMode = -2;
 
 #include "frame.h"
 #include "screen.h"
@@ -11,8 +11,8 @@ int curMode = -1;
 #include "interaction.h"
 #include "hero.h"
 #include "enemy.h"
-#include "fight.h"
 #include "status.h"
+#include "fight.h"
 #include "modes.h"
 
 void setup() {

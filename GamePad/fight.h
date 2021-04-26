@@ -1,3 +1,5 @@
+int getHitChance = 60;
+
 // Check to See if Hero & Enemies Collide
 boolean checkCollide(int hX, int hY, int hW, int hH, int eX, int eY, int eW, int eH){
   boolean canMove = false;                                // Assume a move can be made
@@ -12,10 +14,12 @@ boolean checkCollide(int hX, int hY, int hW, int hH, int eX, int eY, int eW, int
 void fight(){
   bool canFight = checkCollide(heroX, heroY, heroW, heroH, enemyX, enemyY, enemyW,enemyH);
 
-  Serial.println(enemyHealth);
+//  Serial.println(heroHealth);
+//  Serial.println(enemyHealth);
   
   if(canFight){
-    if(buttonBuffer[1] == 1 || buttonBuffer[2] == 1){
+    //Hero Attacking the Enemy
+    if(buttonBuffer[1] == 1 || buttonBuffer[2] == 1){ 
         enemyHealth -= 1;
 
       if(enemyHealth <= 0){
@@ -24,7 +28,21 @@ void fight(){
         tft.setClipRect(enemyX - 2, enemyY - 2, enemyW + 4, enemyH + 4);
         drawLevel(curMode);
         tft.updateScreen();
+
+        enemyX = 0;
+        enemyY = 0;
       }
     }
+    
+    if(random(getHitChance) == 0){
+      heroHealth -= 1;
+      displayHearts();
+
+      if(heroHealth <= 0){
+        curMode = 9; //Losing Screen
+
+      }
+    }
+    
   }
 }

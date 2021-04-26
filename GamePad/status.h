@@ -7,11 +7,21 @@ int heartStartX = 20;
 int heartDisplayBuffer = 2; 
 
 // Display hearts based on health
-void displayHearts(int pHealth) {
+void displayHearts() {
   tft.setClipRect(heartStartX, screenH - 35, heartStartX + (hearts_W*2) + (heartDisplayBuffer*2), hearts_H);
-  tft.drawRGBBitmap(heartStartX, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
-  tft.drawRGBBitmap(heartStartX + hearts_W + heartDisplayBuffer, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
-  tft.drawRGBBitmap(heartStartX + (hearts_W*2) + (heartDisplayBuffer*2), screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+  if(heroHealth == 3){
+    tft.drawRGBBitmap(heartStartX, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+    tft.drawRGBBitmap(heartStartX + hearts_W + heartDisplayBuffer, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+    tft.drawRGBBitmap(heartStartX + (hearts_W*2) + (heartDisplayBuffer*2), screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+  } else if (heroHealth == 2){
+    tft.drawRGBBitmap(heartStartX, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+    tft.drawRGBBitmap(heartStartX + hearts_W + heartDisplayBuffer, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+    tft.drawRGBBitmap(heartStartX + (hearts_W*2) + (heartDisplayBuffer*2), screenH - 35, hearts_PIX[1], hearts_MASK[1], hearts_W, hearts_H);
+  } else if (heroHealth == 1){
+    tft.drawRGBBitmap(heartStartX, screenH - 35, hearts_PIX[0], hearts_MASK[0], hearts_W, hearts_H);
+    tft.drawRGBBitmap(heartStartX + hearts_W + heartDisplayBuffer, screenH - 35, hearts_PIX[1], hearts_MASK[1], hearts_W, hearts_H);
+    tft.drawRGBBitmap(heartStartX + (hearts_W*2) + (heartDisplayBuffer*2), screenH - 35, hearts_PIX[1], hearts_MASK[1], hearts_W, hearts_H);
+  }
   tft.updateScreen();
 }
 
