@@ -1,8 +1,7 @@
 #include "enemy_MASK.h"
 #include "enemy_PIX.h"
-
-#define enemyW 16
-#define enemyH 16
+#include "boss_MASK.h"
+#include "boss_PIX.h"
 
 Metro enemyFrameTimer = Metro(100);
 Metro enemyBrainTimer = Metro(1000);
@@ -10,10 +9,9 @@ Metro enemyBrainTimer = Metro(1000);
 float enemyX = 0;
 float enemyY = 0;
 
+int enemyType = 0;
 bool enemyStatus = true;
 int enemyHealth = 3;
-
-int enemyType = 0; 
 
 float enemyXDir = 0;
 float enemyYDir = 0;
@@ -44,7 +42,7 @@ void moveEnemy(){
   float nextX = enemyX + (enemyXDir * enemySpeed);
   float nextY = enemyY + (enemyYDir * enemySpeed);
 
-  if(checkMove(curMode, nextX, nextY, enemyW, enemyH)){
+  if(checkMove(curMode, nextX, nextY, enemy_W, enemy_H)){
     enemyX = nextX;
     enemyY = nextY;
   }
@@ -52,8 +50,13 @@ void moveEnemy(){
 
 void animateEnemy(){
   if(enemyFrameTimer.check()){
-    if(enemyXDir >= 0){ enemyFrame = 0 + ((enemyFrame + 1) % 6); }
-    else { enemyFrame = 6 + ((enemyFrame + 1) % 6); }
+    if(enemyType == 0){
+      if(enemyXDir >= 0){ enemyFrame = 0 + ((enemyFrame + 1) % 6); }
+      else { enemyFrame = 6 + ((enemyFrame + 1) % 6); }
+    } else if (enemyType == 1) {
+      if(enemyXDir >= 0){ enemyFrame = 3 + ((enemyFrame + 1) % 3); }
+      else { enemyFrame = 0 + ((enemyFrame + 1) % 3); }
+    }
   }
 }
 
@@ -62,10 +65,17 @@ void drawEnemy(){
     updateEnemyDir();
     moveEnemy();
     animateEnemy();
-      
-    tft.setClipRect(enemyX - 2, enemyY - 2, enemyW + 4, enemyH + 4);
-    drawLevel(curMode);
-    tft.drawRGBBitmap(enemyX, enemyY, enemy_PIX[enemyFrame], enemy_MASK[enemyFrame], enemyW, enemyH);
-    tft.updateScreen();
+
+    if(enemyType == 0){
+      tft.setClipRect(enemyX - 2, enemyY - 2, enemy_W + 4, enemy_H + 4);
+      drawLevel(curMode);
+      tft.drawRGBBitmap(enemyX, enemyY, enemy_PIX[enemyFrame], enemy_MASK[enemyFrame], enemy_W, enemy_H);
+      tft.updateScreen();
+    } else if (enemyType == 1) {
+      tft.setClipRect(enemyX - 2, enemyY - 2, boss_W + 4, boss_H + 4);
+      drawLevel(curMode);
+      tft.drawRGBBitmap(enemyX, enemyY, boss_PIX[enemyFrame], boss_MASK[enemyFrame], boss_W, boss_H);
+      tft.updateScreen();
+    }
   }
 }

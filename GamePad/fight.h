@@ -1,4 +1,4 @@
-int getHitChance = 60;
+int getHitChance = 200;
 
 // Check to See if Hero & Enemies Collide
 boolean checkCollide(int hX, int hY, int hW, int hH, int eX, int eY, int eW, int eH){
@@ -12,22 +12,30 @@ boolean checkCollide(int hX, int hY, int hW, int hH, int eX, int eY, int eW, int
 }
 
 void fight(){
-  bool canFight = checkCollide(heroX, heroY, heroW, heroH, enemyX, enemyY, enemyW,enemyH);
+  bool canFight =false;
+  if(enemyType == 0) { canFight = checkCollide(heroX, heroY, heroW, heroH, enemyX, enemyY, enemy_W, enemy_H); }
+  else if(enemyType == 1) { canFight = checkCollide(heroX, heroY, heroW, heroH, enemyX, enemyY, boss_W, boss_H); }
 
 //  Serial.println(heroHealth);
   Serial.println(enemyHealth);
   
   if(canFight){
     //Hero Attacking the Enemy
-    if(buttonBuffer[1] == 1 || buttonBuffer[2] == 1){ 
+    if(buttons[1].rose() || buttons[2].rose()){ 
         enemyHealth -= heroDam;
 
       if(enemyHealth <= 0){
         enemyStatus = false;
 
-        tft.setClipRect(enemyX - 2, enemyY - 2, enemyW + 4, enemyH + 4);
-        drawLevel(curMode);
-        tft.updateScreen();
+        if(enemyType == 0){
+          tft.setClipRect(enemyX - 2, enemyY - 2, enemy_W + 4, enemy_H + 4);
+          drawLevel(curMode);
+          tft.updateScreen();
+        } else if (enemyType == 1){  
+          tft.setClipRect(enemyX - 2, enemyY - 2, boss_W + 4, boss_H + 4);
+          drawLevel(curMode);
+          tft.updateScreen();
+        }
 
         enemyX = 0;
         enemyY = 0;

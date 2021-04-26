@@ -38,6 +38,12 @@ void resetGame(){
   chosenItem = false;
   hasDamageBuff = false;
   hasSpeedBuff = false; 
+
+  heroSpeed = 0.5;
+  heroDam = 1;
+
+  enemyHealth = 3;
+  enemyType = 0;
 }
 
 void titleScreen() {
@@ -49,9 +55,11 @@ void titleScreen() {
     initTitle = true;
   }
 
-  for (int i = 0; i < 4; i++) {
-    if (buttons[i].rose()) {
-      curMode = -1;
+  if(millis() > 1000){
+     for (int i = 0; i < 4; i++) {
+      if (buttons[i].rose()) {
+        curMode = -1;
+      }
     }
   }
 }
@@ -87,8 +95,13 @@ void level0() {             //Amulet Room
   displayEntity(4, (screenW/2) - (powers_W/2), 55); //Amulet
   drawHero();
 
-
-  if(interaction[curMode][curTile] == 0x02 && buttonBuffer[0] == 1){hasAmulet = true; tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); drawLevel(curMode);} //Pick Up Amulet
+  if(interaction[curMode][curTile] == 0x02 && buttons[0].rose()){ //Pick Up Amulet
+    if(!hasAmulet){
+      tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); 
+      drawLevel(curMode);
+      hasAmulet = true;
+    } 
+  }
   if(hasAmulet){if(interaction[curMode][curTile] == 0x03 && buttonBuffer[3] == 1){curMode = 1; initLvl0 = false; heroX = 150; heroY = 130;}} //Advance to Cave Hole Room
 }
 
@@ -122,6 +135,7 @@ void level2() {             //"First Room"
 
     enemyX = 30;
     enemyY = 30;
+    enemyHealth = 3;
     enemyStatus = true;
     initLvl2 = true;
   }
@@ -131,6 +145,7 @@ void level2() {             //"First Room"
   drawHero();
   fight();
 
+  if(enemyHealth == 0)
   if(interaction[curMode][curTile] == 0x06 && buttonBuffer[3] == 1){curMode = 3; initLvl2 = false; heroX = 40; heroY = 75;} //Advance to Level Three
 }
 
@@ -146,6 +161,7 @@ void level3() {             //Level Three
 
     enemyX = 250;
     enemyY = 100;
+    enemyHealth = 3;
     enemyStatus = true;
     initLvl3 = true;
   }
@@ -156,8 +172,10 @@ void level3() {             //Level Three
   fight();
 
   
-  if(interaction[curMode][curTile] == 0x07 && buttonBuffer[3] == 1){curMode = 2; initLvl3 = false; heroX = 275; heroY = 75;} //Return to "First Room"
-  if(interaction[curMode][curTile] == 0x08 && buttonBuffer[3] == 1){curMode = 4; initLvl3 = false; heroX = 150; heroY = 130;} //Advance to Level Four
+  if(enemyHealth == 0){
+    if(interaction[curMode][curTile] == 0x07 && buttonBuffer[3] == 1){curMode = 2; initLvl3 = false; heroX = 275; heroY = 75;} //Return to "First Room"
+    if(interaction[curMode][curTile] == 0x08 && buttonBuffer[3] == 1){curMode = 4; initLvl3 = false; heroX = 150; heroY = 130;} //Advance to Level Four
+  }
 }
 
 void level4() {             //Level Four
@@ -171,6 +189,7 @@ void level4() {             //Level Four
 
     enemyX = 150;
     enemyY = 70;
+    enemyHealth = 3;
     enemyStatus = true;
     initLvl4 = true;
   }
@@ -179,9 +198,11 @@ void level4() {             //Level Four
   drawEnemy();
   drawHero();
   fight();
-  
-  if(interaction[curMode][curTile] == 0x09 && buttonBuffer[3] == 1){curMode = 3; initLvl4 = false; heroX = 150; heroY = 40;} //Return to Level Three
-  if(interaction[curMode][curTile] == 0x0A && buttonBuffer[3] == 1){curMode = 5; initLvl4 = false; heroX = 40; heroY = 75;} //Advance to Clovis Merchant Room
+
+  if(enemyHealth == 0){
+    if(interaction[curMode][curTile] == 0x09 && buttonBuffer[3] == 1){curMode = 3; initLvl4 = false; heroX = 150; heroY = 40;} //Return to Level Three
+    if(interaction[curMode][curTile] == 0x0A && buttonBuffer[3] == 1){curMode = 5; initLvl4 = false; heroX = 40; heroY = 75;} //Advance to Clovis Merchant Room
+  }
 }
 
 void level5() {             //Clovis Merchant Room
@@ -203,40 +224,44 @@ void level5() {             //Clovis Merchant Room
   drawHero();
   
   if(interaction[curMode][curTile] == 0x0B && buttonBuffer[3] == 1){curMode = 4; initLvl5 = false; heroX = 275; heroY = 75;} //Return to Level Four
-  if(interaction[curMode][curTile] == 0x0C && buttonBuffer[0] == 1){ //Refill Hearts
-    chosenItem = true; 
+  if(interaction[curMode][curTile] == 0x0C && buttons[0].rose()){ //Refill Hearts
     heroHealth = 3; 
     displayHearts(); 
-    tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); 
-    drawLevel(curMode);
-    tft.updateScreen();
-    displayPowers();
-  } 
-  if(interaction[curMode][curTile] == 0x0D && buttonBuffer[0] == 1){ //Add Arrow Up Item
+
     if(!chosenItem){
-      hasDamageBuff= true;
+      tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); 
+      drawLevel(curMode);
+      tft.updateScreen();
+      chosenItem = true; 
     }
     
-    chosenItem = true;
-    
-    displayPowers();
-    tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
-    drawLevel(curMode);
-    tft.updateScreen();
     displayPowers();
   } 
-  if(interaction[curMode][curTile] == 0x0E && buttonBuffer[0] == 1){ //Add Speed Up Item
+  if(interaction[curMode][curTile] == 0x0D && buttons[0].rose()){ //Add Arrow Up Item
+    if(!chosenItem){
+      hasDamageBuff= true;
+      heroDam = 3;
+    
+      tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
+      drawLevel(curMode);
+      tft.updateScreen();
+      chosenItem = true;
+    }
+    
+    displayPowers();
+  } 
+  if(interaction[curMode][curTile] == 0x0E && buttons[0].rose()){ //Add Speed Up Item
     if(!chosenItem){
       hasSpeedBuff= true;
       heroSpeed = 0.8;
+    
+      tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
+      drawLevel(curMode);
+      tft.updateScreen();
+      chosenItem = true;
     }
     
-    chosenItem = true;
-    
     displayPowers();
-    tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
-    drawLevel(curMode);
-    tft.updateScreen();
   } 
   if(interaction[curMode][curTile] == 0x0F && buttonBuffer[3] == 1){curMode = 6; initLvl5 = false; heroX = 40; heroY = 75;} //Advance to Level Six
 }
@@ -252,6 +277,7 @@ void level6() {             //Level Six
 
     enemyX = 250;
     enemyY = 75;
+    enemyHealth = 3;
     enemyStatus = true;
     initLvl6 = true;
   }
@@ -261,8 +287,11 @@ void level6() {             //Level Six
   drawHero();
   fight();
 
-  if(interaction[curMode][curTile] == 0x10 && buttonBuffer[3] == 1){curMode = 5; initLvl6 = false; heroX = 275; heroY = 75;} //Return to Clovis Merchant Room
-  if(interaction[curMode][curTile] == 0x11 && buttonBuffer[3] == 1){curMode = 7; initLvl6 = false; heroX = 150; heroY = 40;} //Advance to Level Seven
+
+  if(enemyHealth == 0){
+    if(interaction[curMode][curTile] == 0x10 && buttonBuffer[3] == 1){curMode = 5; initLvl6 = false; heroX = 275; heroY = 75;} //Return to Clovis Merchant Room
+    if(interaction[curMode][curTile] == 0x11 && buttonBuffer[3] == 1){curMode = 7; initLvl6 = false; heroX = 150; heroY = 40;} //Advance to Level Seven
+  }
 }
 
 void level7() {             //Level Seven
@@ -274,8 +303,11 @@ void level7() {             //Level Seven
     displayHearts();
     displayPowers();
 
+    enemyType = 0;
+
     enemyX = 50;
     enemyY = 120;
+    enemyHealth = 3;
     enemyStatus = true;
     initLvl7 = true;
   }
@@ -285,8 +317,11 @@ void level7() {             //Level Seven
   drawHero();
   fight();
 
-  if(interaction[curMode][curTile] == 0x12 && buttonBuffer[3] == 1){curMode = 6; initLvl7 = false; heroX = 150; heroY = 130;} //Return to Level Six
-  if(interaction[curMode][curTile] == 0x13 && buttonBuffer[3] == 1){curMode = 8; initLvl7 = false; heroX = 40; heroY = 75;} //Advance to Ogre Boss Level
+  
+  if(enemyHealth == 0){
+    if(interaction[curMode][curTile] == 0x12 && buttonBuffer[3] == 1){curMode = 6; initLvl7 = false; heroX = 150; heroY = 130;} //Return to Level Six
+    if(interaction[curMode][curTile] == 0x13 && buttonBuffer[3] == 1){curMode = 8; initLvl7 = false; heroX = 40; heroY = 75;} //Advance to Ogre Boss Level
+  }
 }
 
 void level8() {             //Ogre Boss Room
@@ -297,14 +332,27 @@ void level8() {             //Ogre Boss Room
 
     displayHearts();
     displayPowers();
+
+    enemyType = 1;
     
+    enemyX = 150;
+    enemyY = 90;
+    enemyHealth = 9;
+    enemyStatus = true;
     initLvl8 = true;
   }
 
   drawLevel(curMode);
+  drawEnemy();
   drawHero();
+  fight();
 
-  if(interaction[curMode][curTile] == 0x14 && buttonBuffer[3] == 1){curMode = 7; initLvl8 = false; heroX = 275; heroY = 75;} //Return to Ogre Boss Room
+  if(interaction[curMode][curTile] == 0x14 && buttonBuffer[3] == 1){curMode = 7; initLvl8 = false; heroX = 275; heroY = 75;} //Return to Level Seven
+
+  if(enemyHealth <= 0){
+    delay(500);
+    curMode = 10;
+  }
 }
 
 void loseScreen() {
