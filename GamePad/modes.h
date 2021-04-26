@@ -209,6 +209,7 @@ void level5() {             //Clovis Merchant Room
     displayHearts(); 
     tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); 
     drawLevel(curMode);
+    tft.updateScreen();
     displayPowers();
   } 
   if(interaction[curMode][curTile] == 0x0D && buttonBuffer[0] == 1){ //Add Arrow Up Item
@@ -235,6 +236,7 @@ void level5() {             //Clovis Merchant Room
     displayPowers();
     tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
     drawLevel(curMode);
+    tft.updateScreen();
   } 
   if(interaction[curMode][curTile] == 0x0F && buttonBuffer[3] == 1){curMode = 6; initLvl5 = false; heroX = 40; heroY = 75;} //Advance to Level Six
 }
