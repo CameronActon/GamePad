@@ -17,7 +17,7 @@ void fight(){
   else if(enemyType == 1) { canFight = checkCollide(heroX, heroY, heroW, heroH, enemyX, enemyY, boss_W, boss_H); }
 
 //  Serial.println(heroHealth);
-  Serial.println(enemyHealth);
+//  Serial.println(enemyHealth);
   
   if(canFight){
     //Hero Attacking the Enemy
