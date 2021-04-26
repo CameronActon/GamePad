@@ -33,6 +33,11 @@ void resetGame(){
   heroHealth = 3;
   heroX = 150;
   heroY = 120;
+
+  hasAmulet = false;
+  chosenItem = false;
+  hasDamageBuff = false;
+  hasSpeedBuff = false; 
 }
 
 void titleScreen() {
@@ -73,16 +78,18 @@ void level0() {             //Amulet Room
     tft.updateScreen();
     
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
     
     initLvl0 = true;
   }
 
   drawLevel(curMode);
+  displayEntity(4, (screenW/2) - (powers_W/2), 55); //Amulet
   drawHero();
 
-  //if(interaction[curMode][curTile] == 0x02 && buttonBuffer[3] == 1){updatePower(1);} //Pick Up Amulet
-  if(interaction[curMode][curTile] == 0x03 && buttonBuffer[3] == 1){curMode = 1; initLvl0 = false; heroX = 150; heroY = 130;} //Advance to Cave Hole Room
+
+  if(interaction[curMode][curTile] == 0x02 && buttonBuffer[0] == 1){hasAmulet = true; tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); drawLevel(curMode);} //Pick Up Amulet
+  if(hasAmulet){if(interaction[curMode][curTile] == 0x03 && buttonBuffer[3] == 1){curMode = 1; initLvl0 = false; heroX = 150; heroY = 130;}} //Advance to Cave Hole Room
 }
 
 void level1() {             //Cave Hole Room
@@ -92,7 +99,7 @@ void level1() {             //Cave Hole Room
     tft.updateScreen();
     
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
     
     initLvl1 = true;
   }
@@ -111,7 +118,7 @@ void level2() {             //"First Room"
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
 
     enemyX = 30;
     enemyY = 30;
@@ -134,7 +141,7 @@ void level3() {             //Level Three
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
 
 
     enemyX = 250;
@@ -160,7 +167,7 @@ void level4() {             //Level Four
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
 
     enemyX = 150;
     enemyY = 70;
@@ -184,18 +191,51 @@ void level5() {             //Clovis Merchant Room
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
     
     initLvl5 = true;
   }
 
   drawLevel(curMode);
+  displayEntity(0, (screenW/3) - (hearts_W) - 8, screenH - UIHeight - 85); //heart
+  displayEntity(1, (screenW/2) - (powers_W/2), screenH - UIHeight - 95); //Bow Upgrade
+  displayEntity(3, screenW - (screenW/3) - (powers_W/2) + 13, screenH - UIHeight - 95); //Boots Upgrade
   drawHero();
   
   if(interaction[curMode][curTile] == 0x0B && buttonBuffer[3] == 1){curMode = 4; initLvl5 = false; heroX = 275; heroY = 75;} //Return to Level Four
-  //if(interaction[curMode][curTile] == 0x0C && buttonBuffer[3] == 1){updatePower(1);} //Add extra heart item
-  //if(interaction[curMode][curTile] == 0x0D && buttonBuffer[3] == 1){updatePower(1);} //Add Arrow Up Item
-  //if(interaction[curMode][curTile] == 0x0E && buttonBuffer[3] == 1){updatePower(1);} //Add Speed Up Item
+  if(interaction[curMode][curTile] == 0x0C && buttonBuffer[0] == 1){ //Refill Hearts
+    chosenItem = true; 
+    heroHealth = 3; 
+    displayHearts(); 
+    tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40); 
+    drawLevel(curMode);
+    displayPowers();
+  } 
+  if(interaction[curMode][curTile] == 0x0D && buttonBuffer[0] == 1){ //Add Arrow Up Item
+    if(!chosenItem){
+      hasDamageBuff= true;
+    }
+    
+    chosenItem = true;
+    
+    displayPowers();
+    tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
+    drawLevel(curMode);
+    tft.updateScreen();
+    displayPowers();
+  } 
+  if(interaction[curMode][curTile] == 0x0E && buttonBuffer[0] == 1){ //Add Speed Up Item
+    if(!chosenItem){
+      hasSpeedBuff= true;
+      heroSpeed = 0.8;
+    }
+    
+    chosenItem = true;
+    
+    displayPowers();
+    tft.setClipRect(40, 40, screenW - 40, screenH - UIHeight - 40);
+    drawLevel(curMode);
+  } 
   if(interaction[curMode][curTile] == 0x0F && buttonBuffer[3] == 1){curMode = 6; initLvl5 = false; heroX = 40; heroY = 75;} //Advance to Level Six
 }
 
@@ -206,7 +246,7 @@ void level6() {             //Level Six
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
 
     enemyX = 250;
     enemyY = 75;
@@ -230,7 +270,7 @@ void level7() {             //Level Seven
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
 
     enemyX = 50;
     enemyY = 120;
@@ -254,7 +294,7 @@ void level8() {             //Ogre Boss Room
     tft.updateScreen();
 
     displayHearts();
-    displayPowers(1,1);
+    displayPowers();
     
     initLvl8 = true;
   }

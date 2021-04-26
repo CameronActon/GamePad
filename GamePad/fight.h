@@ -15,12 +15,12 @@ void fight(){
   bool canFight = checkCollide(heroX, heroY, heroW, heroH, enemyX, enemyY, enemyW,enemyH);
 
 //  Serial.println(heroHealth);
-//  Serial.println(enemyHealth);
+  Serial.println(enemyHealth);
   
   if(canFight){
     //Hero Attacking the Enemy
     if(buttonBuffer[1] == 1 || buttonBuffer[2] == 1){ 
-        enemyHealth -= 1;
+        enemyHealth -= heroDam;
 
       if(enemyHealth <= 0){
         enemyStatus = false;

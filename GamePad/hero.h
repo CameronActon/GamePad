@@ -18,6 +18,13 @@ bool heroHasBow;
 bool heroHasSpeed;
 
 int heroHealth = 3;
+int heroDam = 1;
+
+bool hasAmulet = false;
+bool hasSpeedBuff = false;
+bool hasDamageBuff = false;
+
+bool chosenItem;
 
 void moveHero() {
   float nextX = heroX + (heroSpeed * float(joystickBuffer[0]));
